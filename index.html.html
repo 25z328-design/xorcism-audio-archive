@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XORCISM | Audio Archive</title>
+  <style>
+    :root { --bg:#08090a; --panel:#141618; --line:#34383b; --text:#e8e8e8; --muted:#9da2a6; --orange:#d97835; }
+    * { box-sizing: border-box; }
+    body {
+      margin:0; min-height:100vh; display:grid; place-items:center; padding:24px;
+      background: radial-gradient(ellipse at 50% 0%, #25211d 0%, #101112 42%, var(--bg) 78%);
+      color:var(--text); font-family:Arial, Helvetica, sans-serif;
+    }
+    .card {
+      width:min(100%, 540px); background:rgba(20,22,24,.96); border:1px solid var(--line);
+      border-radius:14px; padding:clamp(26px,6vw,48px); text-align:center;
+      box-shadow:0 24px 80px #0009;
+    }
+    .sigil { color:var(--orange); font-size:13px; letter-spacing:5px; margin-bottom:20px; }
+    h1 { font-size:clamp(32px,7vw,48px); letter-spacing:7px; margin:0; font-weight:800; }
+    .subtitle { color:var(--muted); letter-spacing:3px; font-size:11px; margin:13px 0 30px; }
+    .rule { height:1px; background:linear-gradient(90deg,transparent,var(--orange),transparent); margin:24px 0; opacity:.8; }
+    p { color:#c2c5c7; line-height:1.65; font-size:14px; }
+    label { display:block; text-align:left; color:#b8babc; font-size:12px; letter-spacing:1.5px; margin:24px 0 9px; }
+    input {
+      width:100%; padding:14px 15px; background:#090a0b; color:var(--text);
+      border:1px solid #45494c; border-radius:6px; font-size:16px; outline:none;
+    }
+    input:focus { border-color:var(--orange); }
+    button, .archive-link {
+      display:inline-block; width:100%; margin-top:15px; padding:14px 18px; border:1px solid var(--orange);
+      border-radius:6px; background:var(--orange); color:#111; font-weight:700; letter-spacing:1.5px;
+      font-size:12px; text-decoration:none; cursor:pointer; transition:.2s;
+    }
+    button:hover, .archive-link:hover { background:#ed8b49; }
+    .error { min-height:18px; color:#f19a68; font-size:13px; margin-top:12px; }
+    .hidden { display:none; }
+    .small { color:#777e82; font-size:11px; margin-top:26px; }
+    .warning { color:#8f969a; font-size:11px; margin-top:18px; line-height:1.5; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="sigil">THE EYE • RESTRICTED ACCESS</div>
+    <h1>XORCISM</h1>
+    <div class="subtitle">AUDIO ARCHIVE / CLASSIFIED</div>
+    <div class="rule"></div>
+
+    <section id="gate">
+      <p>The archive is locked.<br>Enter the password you uncovered to proceed.</p>
+      <form id="passwordForm">
+        <label for="password">ACCESS PASSWORD</label>
+        <input id="password" type="password" placeholder="Enter password" autocomplete="off" required>
+        <button type="submit">UNLOCK ARCHIVE</button>
+      </form>
+      <div id="error" class="error" aria-live="polite"></div>
+    </section>
+
+    <section id="unlocked" class="hidden">
+      <p>ACCESS GRANTED.<br>The audio archive is now available.</p>
+      <a class="archive-link" href="https://drive.google.com/drive/folders/1MnPdpD0fAXU3OddQTihsuB4HE7vnGg2c?usp=drive_link" target="_blank" rel="noopener noreferrer">OPEN AUDIO ARCHIVE ↗</a>
+      <button id="lockButton" type="button" style="background:transparent;color:var(--text);border-color:#45494c;">LOCK PAGE</button>
+    </section>
+
+    <div class="rule"></div>
+    <div class="small">THE EYE • XORCISM</div>
+    
+  </main>
+
+  <script>
+    // Change this value to the password participants should enter.
+    const ACCESS_PASSWORD = "EYE2026";
+
+    const form = document.getElementById("passwordForm");
+    const passwordInput = document.getElementById("password");
+    const error = document.getElementById("error");
+    const gate = document.getElementById("gate");
+    const unlocked = document.getElementById("unlocked");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (passwordInput.value === ACCESS_PASSWORD) {
+        gate.classList.add("hidden");
+        unlocked.classList.remove("hidden");
+        error.textContent = "";
+      } else {
+        error.textContent = "Incorrect password. Try again.";
+        passwordInput.value = "";
+        passwordInput.focus();
+      }
+    });
+
+    document.getElementById("lockButton").addEventListener("click", function () {
+      unlocked.classList.add("hidden");
+      gate.classList.remove("hidden");
+      passwordInput.value = "";
+    });
+  </script>
+</body>
+</html>
